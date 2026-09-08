@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba Cofre Teclado</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #181818;
+      color: #fff;
+      margin: 0;
+      gap: 15px;
+    }
+    #estado {
+      font-size: 2.2rem;
+      font-weight: bold;
+      padding: 20px 40px;
+      border-radius: 10px;
+      border: 3px solid #444;
+    }
+    .abierto { background: #2e7d32; }
+    .cerrado { background: #c62828; }
+    .btn-test {
+      background: #333;
+      color: #fff;
+      border: 1px solid #777;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #consola {
+      font-family: monospace;
+      background: #000;
+      padding: 12px 20px;
+      border-radius: 6px;
+      color: #00ff88;
+      min-width: 320px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="estado" class="abierto">Cofre Abierto</div>
+
+  <div id="consola">Haz clic en cualquier parte de la pantalla</div>
+
+  <div>
+    <button class="btn-test" onclick="probarCerrar()">Probar Audio Cerrar</button>
+    <button class="btn-test" onclick="probarAbrir()">Probar Audio Abrir</button>
+  </div>
+
+  <script>
+    // Enlaces web confiables para asegurar que no falle por rutas de carpetas
+    const sndCerrar = new Audio('https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19/assets/minecraft/sounds/block/chest/close.ogg');
+    const sndAbrir = new Audio('https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19/assets/minecraft/sounds/block/chest/open.ogg');
+
+    const estado = document.getElementById('estado');
+    const consola = document.getElementById('consola');
+
+    let contactoCerrado = false;
+
+    function probarCerrar() {
+      sndCerrar.currentTime = 0;
+      sndCerrar.play().catch(e => alert("Error audio: " + e.message));
+    }
+
+    function probarAbrir() {
+      sndAbrir.currentTime = 0;
+      sndAbrir.play().catch(e => alert("Error audio: " + e.message));
+    }
+
+    // Al tocar la página habilitamos el audio
+    window.addEventListener('pointerdown', () => {
+      consola.textContent = "Audio listo. Junta los cables.";
+    });
+
+    window.addEventListener('keydown', (e) => {
+      consola.textContent = `Pulsado -> key: ${e.key} | code: ${e.code}`;
+
+      // Detecta la tecla soldada (MetaLeft) o tecla '+'
+      if ((e.code === 'MetaLeft' || e.key === 'Meta' || e.key === '+') && !contactoCerrado) {
+        contactoCerrado = true;
+        estado.textContent = 'Cofre Cerrado';
+        estado.className = 'cerrado';
+
+        sndCerrar.currentTime = 0;
+        sndCerrar.play().catch(err => console.log(err));
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      consola.textContent = `Soltado -> key: ${e.key} | code: ${e.code}`;
+
+      if (e.code === 'MetaLeft' || e.key === 'Meta' || e.key === '+') {
+        contactoCerrado = false;
+        estado.textContent = 'Cofre Abierto';
+        estado.className = 'abierto';
+
+        sndAbrir.currentTime = 0;
+        sndAbrir.play().catch(err => console.log(err));
+      }
+    });
+  </script>
+</body>
+</html>
