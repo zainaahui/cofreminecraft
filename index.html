@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Prueba Cofre Teclado</title>
+  <title>Prueba Cofre Teclado Universal</title>
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -48,21 +48,22 @@
 
   <div id="estado" class="abierto">Cofre Abierto</div>
 
-  <div id="consola">Haz clic en cualquier parte de la pantalla</div>
+  <div id="consola">Haz clic en la pantalla y presiona tu tecla</div>
 
   <div>
     <button class="btn-test" onclick="probarCerrar()">Probar Audio Cerrar</button>
     <button class="btn-test" onclick="probarAbrir()">Probar Audio Abrir</button>
+    <button class="btn-test" onclick="reiniciarTecla()" style="background: #442222; border-color: #994444;">Reiniciar Tecla</button>
   </div>
 
   <script>
-    // Enlaces web confiables para asegurar que no falle por rutas de carpetas
     const sndCerrar = new Audio('https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19/assets/minecraft/sounds/block/chest/close.ogg');
     const sndAbrir = new Audio('https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.19/assets/minecraft/sounds/block/chest/open.ogg');
 
     const estado = document.getElementById('estado');
     const consola = document.getElementById('consola');
 
+    let teclaDefinida = null;
     let contactoCerrado = false;
 
     function probarCerrar() {
@@ -75,16 +76,26 @@
       sndAbrir.play().catch(e => alert("Error audio: " + e.message));
     }
 
-    // Al tocar la página habilitamos el audio
-    window.addEventListener('pointerdown', () => {
-      consola.textContent = "Audio listo. Junta los cables.";
-    });
+    function reiniciarTecla() {
+      teclaDefinida = null;
+      contactoCerrado = false;
+      estado.textContent = 'Cofre Abierto';
+      estado.className = 'abierto';
+      consola.textContent = "Configuración reiniciada. Presiona la tecla que usarás.";
+    }
 
     window.addEventListener('keydown', (e) => {
-      consola.textContent = `Pulsado -> key: ${e.key} | code: ${e.code}`;
+      // Si todavía no hay una tecla definida, la primera que se presione se queda guardada
+      if (!teclaDefinida) {
+        teclaDefinida = e.code; // Usamos e.code para que sea independiente del idioma/distribución
+        consola.textContent = `¡Tecla asignada! Usando: ${e.code} (${e.key})`;
+        return;
+      }
 
-      // Detecta la tecla soldada (MetaLeft) o tecla '+'
-      if ((e.code === 'MetaLeft' || e.key === 'Meta' || e.key === '+') && !contactoCerrado) {
+      consola.textContent = `Pulsado -> code: ${e.code} | key: ${e.key}`;
+
+      // Si la tecla presionada coincide con la que se definió al inicio
+      if (e.code === teclaDefinida && !contactoCerrado) {
         contactoCerrado = true;
         estado.textContent = 'Cofre Cerrado';
         estado.className = 'cerrado';
@@ -95,9 +106,10 @@
     });
 
     window.addEventListener('keyup', (e) => {
-      consola.textContent = `Soltado -> key: ${e.key} | code: ${e.code}`;
+      consola.textContent = `Soltado -> code: ${e.code} | key: ${e.key}`;
 
-      if (e.code === 'MetaLeft' || e.key === 'Meta' || e.key === '+') {
+      // Si se suelta la tecla asignada
+      if (teclaDefinida && e.code === teclaDefinida) {
         contactoCerrado = false;
         estado.textContent = 'Cofre Abierto';
         estado.className = 'abierto';
