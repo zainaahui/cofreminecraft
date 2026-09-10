@@ -36,20 +36,20 @@ Demostración del prototipo físico en uso real:
 ### 1. Fabricación Digital (Impresión 3D)
 Modelado e impresión 3D en PLA mediante impresora Bambu Lab para el cuerpo, tapa y placas de encastre.
 <p align="center">
-  <img src="./proceso/Fabricacion%201.jpeg" width="45%" />
-  <img src="./proceso/Fabricacion%202.jpeg" width="45%" />
+  <img src="Fabricacion%201.jpeg" width="45%" />
+  <img src="Fabricacion%202.jpeg" width="45%" />
 </p>
 
 ### 2. Despiece y Ensamble de Hardware
 Integración de la placa controladora del teclado desmontado (*keyboard hack*) en el fondo del cofre y montaje del interruptor de inclinación en la bisagra de la tapa.
 <p align="center">
-  <img src="./proceso/Fabricacion%203.jpeg" width="45%" />
-  <img src="./proceso/Fabricacion%205.jpeg" width="45%" />
+  <img src="Fabricacion%203.jpeg" width="45%" />
+  <img src="Fabricacion%205.jpeg" width="45%" />
 </p>
 
 ### 3. Acabado y Pruebas Operativas
 Ensamble exterior final y calibración del sistema conectado por USB al computador, verificando la detección de eventos y el disparo de los sonidos.
 <p align="center">
-  <img src="./proceso/Fabricacion%204.jpeg" width="45%" />
-  <img src="./proceso/Fabricacion%206.jpeg" width="45%" />
+  <img src="Fabricacion%204.jpeg" width="45%" />
+  <img src="Fabricacion%206.jpeg" width="45%" />
 </p>
